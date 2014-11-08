@@ -4,5 +4,5 @@ import si.urbas.sbt.releasenotes.test._
 
 object BuildConfiguration extends Build {
   val root = project.in(file("."))
-    .enablePlugins(RstReleaseNotesFormat, ReleaseNotesSelfTestPlugin)
+    .enablePlugins(PlainReleaseNotesFormat(), ReleaseNotesSelfTestPlugin)
 }
