@@ -1,0 +1,3 @@
+# Check that the release notes file is created in the target folder.
+> releaseNotes
+$ exists RELEASE_NOTES.md

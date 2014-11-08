@@ -1,11 +1,4 @@
-# Check that the release notes file is created in the target folder.
-> releaseNotes
-# exists target/releasenotes/releaseNotes
-
-# Check that the release notes have the right content.
-> assertReleaseNotes
-
 # Prepare for the next release version.
 > blessReleaseNotes
-# exists src/releasenotes/releaseNotesBody.previousVersion
+$ exists src/releasenotes/releaseNotesBody.previousVersion
 > assertBlessedReleaseNotes

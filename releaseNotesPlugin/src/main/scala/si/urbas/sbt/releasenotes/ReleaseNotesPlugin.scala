@@ -46,7 +46,8 @@ object ReleaseNotesPlugin extends AutoPlugin {
           ""
       },
       releaseNotesBody := {
-        Seq(releaseNoteVersionHeader.value, releaseNoteCurrentVersionEntries.value, "\n\n", releaseNotesPreviousVersionBody.value)
+        val previousVersionBody = releaseNotesPreviousVersionBody.value
+        Seq(releaseNoteVersionHeader.value, releaseNoteCurrentVersionEntries.value, if (previousVersionBody.isEmpty) "" else "\n\n", previousVersionBody)
           .mkString
       },
       releaseNotes := {
