@@ -13,6 +13,7 @@ object BuildConfiguration extends Build {
 
   lazy val root = project.in(file("."))
     .aggregate(releaseNotesPlugin)
+    .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
     .settings(scriptedSettings: _*)

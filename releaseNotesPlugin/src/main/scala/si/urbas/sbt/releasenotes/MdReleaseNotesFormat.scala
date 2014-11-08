@@ -3,7 +3,7 @@ package si.urbas.sbt.releasenotes
 import sbt.Keys._
 import sbt._
 
-object MdReleaseNotesPlugin extends AutoPlugin {
+object MdReleaseNotesFormat extends AutoPlugin {
 
   override def requires: Plugins = ReleaseNotesPlugin
 

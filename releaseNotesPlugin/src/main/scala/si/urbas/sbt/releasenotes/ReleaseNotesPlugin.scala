@@ -46,7 +46,7 @@ object ReleaseNotesPlugin extends AutoPlugin {
           ""
       },
       releaseNotesBody := {
-        Seq(releaseNoteVersionHeader.value, releaseNoteCurrentVersionEntries.value, releaseNotesPreviousVersionBody.value)
+        Seq(releaseNoteVersionHeader.value, releaseNoteCurrentVersionEntries.value, "\n\n", releaseNotesPreviousVersionBody.value)
           .mkString
       },
       releaseNotes := {
