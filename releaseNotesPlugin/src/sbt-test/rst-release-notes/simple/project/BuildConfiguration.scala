@@ -1,8 +1,8 @@
 import sbt._
-import si.urbas.sbt.releasenotes.MdReleaseNotesFormat
-import si.urbas.sbt.releasenotes.test.ReleaseNotesSelfTestPlugin
+import si.urbas.sbt.releasenotes._
+import si.urbas.sbt.releasenotes.test._
 
 object BuildConfiguration extends Build {
   val root = project.in(file("."))
-    .enablePlugins(MdReleaseNotesFormat, ReleaseNotesSelfTestPlugin)
+    .enablePlugins(RstReleaseNotesFormat, ReleaseNotesSelfTestPlugin)
 }
