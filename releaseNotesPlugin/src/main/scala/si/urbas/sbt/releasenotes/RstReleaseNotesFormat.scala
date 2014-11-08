@@ -14,7 +14,7 @@ object RstReleaseNotesFormat extends AutoPlugin {
       includeFilter.in(releaseNotes) := "*.rst",
       releaseNoteHeader := "Release notes\n=============\n\n",
       releaseNoteFooter := "",
-      releaseNoteVersionHeader := s"## ${version.value}\n${version.value.map(_ => "-").mkString}\n\n",
+      releaseNoteVersionHeader := s"${version.value}\n${version.value.map(_ => "-").mkString}\n\n",
       releaseNotesFile := releaseNotesDir.value / "RELEASE_NOTES.rst"
     )
   }

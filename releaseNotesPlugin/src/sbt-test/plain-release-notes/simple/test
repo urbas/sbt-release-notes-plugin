@@ -1,0 +1,5 @@
+# Check that the release notes file is created in the target folder.
+> releaseNotes
+$ exists target/releasenotes/RELEASE_NOTES
+# Check that the release notes have the right content.
+> assertReleaseNotes
