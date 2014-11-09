@@ -1,0 +1,1 @@
+* Added a new strategy: ``SphinxReleaseNotesStrategy``. Also documented in README.md.

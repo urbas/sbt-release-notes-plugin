@@ -7,7 +7,8 @@ object BuildConfiguration extends Build {
 
   override def settings: Seq[Def.Setting[_]] = {
     super.settings ++ Seq(
-      organization := "si.urbas"
+      organization := "si.urbas",
+      publishArtifact.in(Compile, packageDoc) := false
     )
   }
 

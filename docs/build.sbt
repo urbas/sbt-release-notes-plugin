@@ -1,11 +1,11 @@
 organization := "si.urbas"
 
-name := "sbt-release-notes-github-sample"
+name := "sbt-release-notes-docs"
 
 version := IO.read(file("../LATEST_RELEASE_VERSION")).trim
 
-val root = project.in(file("."))
-  .enablePlugins(RstReleaseNotesFormat)
+val docs = project.in(file("."))
+  .enablePlugins(SphinxReleaseNotesStrategy)
 
 site.settings
 

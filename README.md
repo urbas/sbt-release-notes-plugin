@@ -77,3 +77,12 @@ __Root folder__ (suitable for GitHub-style repositories):
 
 Places the blessed release notes file into the project's root folder. For example, if you use the [Markdown](#markdown) format,
 then the file `RELEASE_NOTES.md` will be placed in the topmost folder of your project.
+
+__Sphinx__ (suitable for use with the [sbt-site plugin](https://github.com/sbt/sbt-site) and its Sphinx support):
+
+- Strategy name: `SphinxReleaseNotesStrategy`
+
+Does not have blessed release notes. This strategy outputs the release notes file into `src/sphinx/releaseNotes.rst` (instead
+of `target/releasenotes/RELEASE_NOTES.rst`).
+
+You can use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
