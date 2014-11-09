@@ -33,7 +33,7 @@ object ReleaseNotesPlugin extends AutoPlugin {
     Seq(
       releaseNotesSourceDir := sourceDirectory.value / RELEASE_NOTES_DIR_NAME,
       sourceDirectories.in(releaseNotes) <<= releaseNotesSourceDir { dir => Seq(dir)},
-      excludeFilter.in(releaseNotes) := new SimpleFileFilter(_.equals(releaseNotesPreviousVersionBodyFile.value)) || DirectoryFilter,
+      excludeFilter.in(releaseNotes) := new SimpleFileFilter(_.equals(releaseNotesPreviousVersionBodyFile.value)),
       releaseNotesSources <<= Defaults.collectFiles(sourceDirectories.in(releaseNotes), includeFilter.in(releaseNotes), excludeFilter.in(releaseNotes)),
       releaseNotesDir := target.value / RELEASE_NOTES_DIR_NAME,
       releaseNoteCurrentVersionEntries := releaseNotesSources.value.sortBy(_.getName).map(IO.read(_)).mkString("\n\n"),
