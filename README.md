@@ -71,18 +71,23 @@ Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasen
 
 ### Strategies
 
-__Root folder__ (suitable for GitHub-style repositories):
+#### Root folder
 
-- Strategy name: `RootFolderReleaseNotesStrategy`
+- __Strategy name__: `RootFolderReleaseNotesStrategy`
+
+This strategy is suitable for GitHub-style repositories. See [the github example](samples/github).
 
 Places the blessed release notes file into the project's root folder. For example, if you use the [Markdown](#markdown) format,
 then the file `RELEASE_NOTES.md` will be placed in the topmost folder of your project.
 
-__Sphinx__ (suitable for use with the [sbt-site plugin](https://github.com/sbt/sbt-site) and its Sphinx support):
+#### Sphinx
 
-- Strategy name: `SphinxReleaseNotesStrategy`
+- __Strategy name__: `SphinxReleaseNotesStrategy`
 
-Does not have blessed release notes. This strategy outputs the release notes file into `src/sphinx/releaseNotes.rst` (instead
+This strategy is suitable for use with the [sbt-site plugin](https://github.com/sbt/sbt-site) and its Sphinx support).
+See [the sphinx example](docs).
+
+Does not produce blessed release notes. This strategy outputs the release notes file into `src/sphinx/releaseNotes.rst` (instead
 of `target/releasenotes/RELEASE_NOTES.rst`).
 
 You can use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
