@@ -8,6 +8,7 @@ $ touch src/releasenotes/note1.rst
 -> releaseNotes
 
 # Check that the release notes file is not overwritten twice
+$ touch target/releasenotes/RELEASE_NOTES.rst
 > releaseNotes
 
 # Check that the release notes file is overwritten when the previous version release notes are newer
