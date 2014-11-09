@@ -1,5 +1,7 @@
 # SBT Release Notes Plugin
 
+Please see [the release notes](RELEASE_NOTES.md) for the latest version of this plugin.
+
 [![Build Status](https://travis-ci.org/urbas/sbt-release-notes-plugin.svg?branch=master)](https://travis-ci.org/urbas/sbt-release-notes-plugin)
 
 This SBT plugin generates release notes. It takes multiple small release note entry files and concatenates them into
