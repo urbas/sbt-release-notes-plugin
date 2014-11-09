@@ -7,5 +7,5 @@ import si.urbas.sbt.content._
 object MdReleaseNotesFormat extends ReleaseNotesFormat(
   header = toContentDef("# Release notes\n\n"),
   versionHeader = toContentDef(version { v => s"## $v\n\n" }),
-  releaseNotesFileName = Def.value("RELEASE_NOTES.md")
+  overriddenReleaseNotesFileName = "RELEASE_NOTES.md"
 )

@@ -37,9 +37,16 @@ Now you can finally run the following SBT commands.
 
 ## SBT tasks
 
-`releaseNotes`: Creates the release notes file and puts it in a location determined by the selected format and strategy.
+`releaseNotes`: Creates the release notes file. The location of the file determined by the [format](#formats)
+(by default this file is `target/releasenotes/RELEASE_NOTES`).
 
-`blessReleaseNotes`: Prepares release notes for the next version. You must commit the changes made by this task.
+`blessReleaseNotes`: Prepares release notes for the next version. You must commit its changes. In detail, this task does
+the following:
+
+1. optionally copies the release notes file into the folder determined by the [strategies](#strategies) (default is not
+to copy the release notes anywhere).
+
+2. prepends the current release note entries to the `src/releasenotes/releaseNotesBody.previousVersion` file.
 
 ### Formats
 
@@ -66,5 +73,5 @@ __Root folder__ (suitable for GitHub-style repositories):
 
 - Strategy name: `RootFolderReleaseNotesStrategy`
 
-Places the release notes file into the build's root folder. For example, if you use the [Markdown](#markdown) format,
+Places the blessed release notes file into the project's root folder. For example, if you use the [Markdown](#markdown) format,
 then the file `RELEASE_NOTES.md` will be placed in the topmost folder of your project.

@@ -3,6 +3,7 @@ package si.urbas.sbt
 import java.io.File
 
 import sbt.{Def, IO}
+import si.urbas.sbt.util._
 
 package object content {
 
@@ -11,9 +12,7 @@ package object content {
   }
 
   def overwriteIfOlder(outputFile: File, content: TimestampedContent): Unit = {
-    if (outputFile.lastModified() < content.timestamp) {
-      IO.write(outputFile, content.content)
-    }
+    ifSourceNewer(content, outputFile)((content, file) => IO.write(file, content.content))
   }
 
   def overwrite(outputFile: File, content: TimestampedContent): Unit = {

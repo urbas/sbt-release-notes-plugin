@@ -8,6 +8,6 @@ object RootFolderReleaseNotesStrategy extends ReleaseNotesStrategy {
   import si.urbas.sbt.releasenotes.ReleaseNotesPlugin.autoImport._
 
   override def projectSettings: Seq[Def.Setting[_]] = {
-    Seq(releaseNotesDir := baseDirectory.value)
+    Seq(releaseNotesBlessedFile := Some(baseDirectory.value / releaseNotesFileName.value))
   }
 }

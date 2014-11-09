@@ -8,7 +8,7 @@ import si.urbas.sbt.content._
 class ReleaseNotesFormat(header: Def.Initialize[TimestampedContent] = DEFAULT_HEADER,
                          versionHeader: Def.Initialize[TimestampedContent] = DEFAULT_VERSION_HEADER,
                          footer: Def.Initialize[TimestampedContent] = EMPTY_FOOTER,
-                         releaseNotesFileName: Def.Initialize[String] = RELEASE_NOTES_FILE_NAME) extends AutoPlugin {
+                         overriddenReleaseNotesFileName: String = ReleaseNotesPlugin.DEFAULT_RELEASE_NOTES_FILE) extends AutoPlugin {
 
   override def requires: Plugins = ReleaseNotesPlugin
 
@@ -20,7 +20,7 @@ class ReleaseNotesFormat(header: Def.Initialize[TimestampedContent] = DEFAULT_HE
       releaseNotesHeader := header.value,
       releaseNotesFooter := footer.value,
       releaseNotesVersionHeader := versionHeader.value,
-      releaseNotesFile := releaseNotesDir.value / releaseNotesFileName.value
+      releaseNotesFileName := overriddenReleaseNotesFileName
     )
   }
 }
@@ -30,5 +30,4 @@ object ReleaseNotesFormat {
   val EMPTY_FOOTER = toContentDef("")
   val DEFAULT_HEADER = toContentDef("Release notes\n\n\n")
   val DEFAULT_VERSION_HEADER = toContentDef(version { version => s"$version\n\n" })
-  val RELEASE_NOTES_FILE_NAME = Def.value("RELEASE_NOTES")
 }

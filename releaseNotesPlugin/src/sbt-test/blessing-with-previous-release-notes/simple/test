@@ -2,3 +2,4 @@
 > blessReleaseNotes
 $ exists src/releasenotes/releaseNotesBody.previousVersion
 > assertBlessedReleaseNotes
+$ exists RELEASE_NOTES.md
