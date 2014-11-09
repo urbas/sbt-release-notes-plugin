@@ -3,10 +3,11 @@ package si.urbas.sbt.releasenotes
 import sbt.Keys._
 import sbt._
 import si.urbas.sbt.releasenotes.ReleaseNotesFormat._
+import si.urbas.sbt.content._
 
-class ReleaseNotesFormat(header: Def.Initialize[String] = DEFAULT_HEADER,
-                         versionHeader: Def.Initialize[String] = DEFAULT_VERSION_HEADER,
-                         footer: Def.Initialize[String] = EMPTY_FOOTER,
+class ReleaseNotesFormat(header: Def.Initialize[TimestampedContent] = DEFAULT_HEADER,
+                         versionHeader: Def.Initialize[TimestampedContent] = DEFAULT_VERSION_HEADER,
+                         footer: Def.Initialize[TimestampedContent] = EMPTY_FOOTER,
                          releaseNotesFileName: Def.Initialize[String] = RELEASE_NOTES_FILE_NAME) extends AutoPlugin {
 
   override def requires: Plugins = ReleaseNotesPlugin
@@ -26,8 +27,8 @@ class ReleaseNotesFormat(header: Def.Initialize[String] = DEFAULT_HEADER,
 
 object ReleaseNotesFormat {
   val RELEASE_NOTES_ENTRIES_INCLUDE_FILTER = -DirectoryFilter
-  val EMPTY_FOOTER = Def.value("")
-  val DEFAULT_HEADER = Def.value("Release notes\n\n\n")
-  val DEFAULT_VERSION_HEADER = version { version => s"$version\n\n"}
+  val EMPTY_FOOTER = toContentDef("")
+  val DEFAULT_HEADER = toContentDef("Release notes\n\n\n")
+  val DEFAULT_VERSION_HEADER = toContentDef(version { version => s"$version\n\n" })
   val RELEASE_NOTES_FILE_NAME = Def.value("RELEASE_NOTES")
 }

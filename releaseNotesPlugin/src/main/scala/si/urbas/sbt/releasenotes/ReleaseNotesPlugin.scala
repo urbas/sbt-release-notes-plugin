@@ -2,6 +2,7 @@ package si.urbas.sbt.releasenotes
 
 import sbt.Keys._
 import sbt._
+import si.urbas.sbt.content._
 
 object ReleaseNotesPlugin extends AutoPlugin {
 
@@ -19,12 +20,12 @@ object ReleaseNotesPlugin extends AutoPlugin {
     val releaseNotesPreviousVersionFile = settingKey[File]("the file that contains the body of the release notes for the previous version.").in(releaseNotes)
     val releaseNotesFile = settingKey[File]("the accumulated release notes file for the current version. This file can be used in the documentation.").in(releaseNotes)
 
-    val releaseNotesHeader = taskKey[String]("the header that will be prepended at the top of the release notes file.").in(releaseNotes)
-    val releaseNotesFooter = taskKey[String]("the footer that will be appended at the bottom of the release notes file.").in(releaseNotes)
-    val releaseNotesVersionHeader = taskKey[String]("the header that will be prepended above the release notes for the current version but below the top header.").in(releaseNotes)
-    val releaseNotesCurrentVersionBody = taskKey[String]("returns the content of release notes. By default, this contains only the concatenated release note entries (without the per-version header).").in(releaseNotes)
-    val releaseNotesPreviousVersion = taskKey[String]("returns only the previous release notes (without the top header or footer).").in(releaseNotes)
-    val releaseNotesBody = taskKey[String]("returns only the body of the release notes for the current version. The body contains the concatenated release notes entries but not the top header and footer.").in(releaseNotes)
+    val releaseNotesHeader = taskKey[TimestampedContent]("the header that will be prepended at the top of the release notes file.").in(releaseNotes)
+    val releaseNotesFooter = taskKey[TimestampedContent]("the footer that will be appended at the bottom of the release notes file.").in(releaseNotes)
+    val releaseNotesVersionHeader = taskKey[TimestampedContent]("the header that will be prepended above the release notes for the current version but below the top header.").in(releaseNotes)
+    val releaseNotesCurrentVersionBody = taskKey[TimestampedContent]("returns the content of release notes. By default, this contains only the concatenated release note entries (without the per-version header).").in(releaseNotes)
+    val releaseNotesPreviousVersion = taskKey[TimestampedContent]("returns only the previous release notes (without the top header or footer).").in(releaseNotes)
+    val releaseNotesBody = taskKey[TimestampedContent]("returns only the body of the release notes for the current version. The body contains the concatenated release notes entries but not the top header and footer.").in(releaseNotes)
   }
 
   import si.urbas.sbt.releasenotes.ReleaseNotesPlugin.autoImport._
@@ -37,38 +38,37 @@ object ReleaseNotesPlugin extends AutoPlugin {
       releaseNotesSources <<= Defaults.collectFiles(sourceDirectories.in(releaseNotes), includeFilter.in(releaseNotes), excludeFilter.in(releaseNotes)),
       releaseNotesDir := target.value / RELEASE_NOTES_DIR_NAME,
       releaseNotesPreviousVersionFile := releaseNotesSourceDir.value / RELEASE_NOTES_BODY_PREVIOUS_VERSION_FILE_NAME,
-      releaseNotesCurrentVersionBody := releaseNotesSources.value.sortBy(_.getName).map(IO.read(_)).mkString("\n\n"),
+      releaseNotesCurrentVersionBody := toContent(releaseNotesSources.value, "\n\n"),
       releaseNotesPreviousVersion <<= previousVersionBodyTask(),
       releaseNotesBody <<= currentVersionBodyTask(),
       releaseNotes <<= releaseNotesTask(),
-      blessReleaseNotes := IO.write(releaseNotesPreviousVersionFile.value, releaseNotesBody.value)
+      blessReleaseNotes <<= blessReleaseNotesTask()
     )
+  }
+
+  private def currentVersionBodyTask(): Def.Initialize[Task[TimestampedContent]] = {
+    Def.task[TimestampedContent] {
+      releaseNotesVersionHeader.value +
+        releaseNotesCurrentVersionBody.value +
+        releaseNotesPreviousVersion.value.map(c => if (c.isEmpty) "" else s"\n\n$c")
+    }
   }
 
   private def releaseNotesTask(): Def.Initialize[Task[Unit]] = {
     Def.task[Unit] {
-      val releaseNotesContent = Seq(releaseNotesHeader.value, releaseNotesBody.value, releaseNotesFooter.value).mkString
-      IO.write(releaseNotesFile.value, releaseNotesContent)
+      overwriteIfOlder(releaseNotesFile.value, releaseNotesHeader.value + releaseNotesBody.value + releaseNotesFooter.value)
     }
   }
 
-  private def currentVersionBodyTask(): Def.Initialize[Task[String]] = {
-    Def.task[String] {
-      val previousVersionBody = releaseNotesPreviousVersion.value
-      Seq(releaseNotesVersionHeader.value, releaseNotesCurrentVersionBody.value, if (previousVersionBody.isEmpty) "" else "\n\n", previousVersionBody)
-        .mkString
+  private def blessReleaseNotesTask(): Def.Initialize[Task[Unit]] = {
+    Def.task[Unit] {
+      overwriteIfOlder(releaseNotesPreviousVersionFile.value, releaseNotesBody.value)
     }
   }
 
-  private def previousVersionBodyTask(): Def.Initialize[Task[String]] = {
-    Def.task[String] {
-      val prevVersionBodyFile = releaseNotesPreviousVersionFile.value
-      if (prevVersionBodyFile.exists()) {
-        IO.read(prevVersionBodyFile)
-      }
-      else {
-        ""
-      }
+  private def previousVersionBodyTask(): Def.Initialize[Task[TimestampedContent]] = {
+    Def.task[TimestampedContent] {
+      FileContent(releaseNotesPreviousVersionFile.value)
     }
   }
 }
