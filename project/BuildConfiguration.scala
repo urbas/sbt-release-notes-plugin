@@ -24,12 +24,12 @@ object BuildConfiguration extends Build {
       publishArtifact in(Compile, packageSrc) := true,
       publishArtifact in(Test, packageSrc) := false,
       publishArtifact in(Test, packageDoc) := false,
+      sources.in(Compile, doc) := Nil,
       credentials ++= {
         if (credentialsFile.exists()) Seq(Credentials(credentialsFile)) else Nil
       },
       publishMavenStyle := true,
-      profileName := "org.xerial",
-      publishArtifact.in(Compile, packageDoc) := false
+      profileName := "org.xerial"
     )
   }
 
