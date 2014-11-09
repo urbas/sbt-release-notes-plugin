@@ -1,4 +1,15 @@
-# Check that the release notes file is created in the target folder.
+# Check that the release notes file is not overwritten when the entries are older.
 $ mkdir target/releasenotes/
 $ touch target/releasenotes/RELEASE_NOTES.rst
 > releaseNotes
+
+# Check that the release notes file is overwritten when the entries are newer
+$ touch src/releasenotes/note1.rst
+-> releaseNotes
+
+# Check that the release notes file is not overwritten twice
+> releaseNotes
+
+# Check that the release notes file is overwritten when the previous version release notes are newer
+$ touch src/releasenotes/releaseNotesBody.previousVersion
+-> releaseNotes

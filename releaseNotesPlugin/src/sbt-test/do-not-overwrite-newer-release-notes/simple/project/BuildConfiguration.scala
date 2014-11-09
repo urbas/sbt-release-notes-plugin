@@ -8,7 +8,7 @@ object ThrowIfReleaseNotesWritten extends ReleaseNotesStrategy {
 
   override def projectSettings: Seq[Def.Setting[_]] = {
     Seq(
-      releaseNotesCurrentVersionBody <<= releaseNotesCurrentVersionBody.map(_.map(_ => sys.error(s"The content was written even though the output file is newer.")))
+      releaseNotesCurrentVersionBody <<= releaseNotesCurrentVersionBody.map(_.map(_ => sys.error(s"The content of release notes was overwritten.")))
     )
   }
 
