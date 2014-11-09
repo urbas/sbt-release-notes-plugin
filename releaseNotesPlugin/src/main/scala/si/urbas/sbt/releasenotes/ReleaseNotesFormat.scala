@@ -16,9 +16,9 @@ class ReleaseNotesFormat(header: Def.Initialize[String] = DEFAULT_HEADER,
   override def projectSettings: Seq[Def.Setting[_]] = {
     Seq(
       includeFilter.in(releaseNotes) := RELEASE_NOTES_ENTRIES_INCLUDE_FILTER,
-      releaseNoteHeader := header.value,
-      releaseNoteFooter := footer.value,
-      releaseNoteVersionHeader := versionHeader.value,
+      releaseNotesHeader := header.value,
+      releaseNotesFooter := footer.value,
+      releaseNotesVersionHeader := versionHeader.value,
       releaseNotesFile := releaseNotesDir.value / releaseNotesFileName.value
     )
   }

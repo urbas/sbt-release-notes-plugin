@@ -19,10 +19,10 @@ object ReleaseNotesPlugin extends AutoPlugin {
     val releaseNotesPreviousVersionBodyFile = settingKey[File]("the file that contains the body of the release notes for the previous version.").in(releaseNotes)
     val releaseNotesFile = settingKey[File]("the accumulated release notes file for the current version. This file can be used in the documentation.").in(releaseNotes)
 
-    val releaseNoteHeader = taskKey[String]("the header that will be prepended at the top of the release notes file.").in(releaseNotes)
-    val releaseNoteFooter = taskKey[String]("the header that will be appended at the bottom of the release notes file.").in(releaseNotes)
-    val releaseNoteVersionHeader = taskKey[String]("the header that will be prepended above the release notes for the current version but below the top header.").in(releaseNotes)
-    val releaseNoteCurrentVersionEntries = taskKey[String]("returns the concatenated release note entries.").in(releaseNotes)
+    val releaseNotesHeader = taskKey[String]("the header that will be prepended at the top of the release notes file.").in(releaseNotes)
+    val releaseNotesFooter = taskKey[String]("the footer that will be appended at the bottom of the release notes file.").in(releaseNotes)
+    val releaseNotesVersionHeader = taskKey[String]("the header that will be prepended above the release notes for the current version but below the top header.").in(releaseNotes)
+    val releaseNotesCurrentVersionEntries = taskKey[String]("returns the concatenated release note entries.").in(releaseNotes)
     val releaseNotesPreviousVersionBody = taskKey[String]("returns only the body of the previous release notes.").in(releaseNotes)
     val releaseNotesBody = taskKey[String]("returns only the body of the release notes for the current version. The body contains the concatenated release notes entries but not the top header and footer.").in(releaseNotes)
   }
@@ -36,25 +36,39 @@ object ReleaseNotesPlugin extends AutoPlugin {
       excludeFilter.in(releaseNotes) := new SimpleFileFilter(_.equals(releaseNotesPreviousVersionBodyFile.value)),
       releaseNotesSources <<= Defaults.collectFiles(sourceDirectories.in(releaseNotes), includeFilter.in(releaseNotes), excludeFilter.in(releaseNotes)),
       releaseNotesDir := target.value / RELEASE_NOTES_DIR_NAME,
-      releaseNoteCurrentVersionEntries := releaseNotesSources.value.sortBy(_.getName).map(IO.read(_)).mkString("\n\n"),
+      releaseNotesCurrentVersionEntries := releaseNotesSources.value.sortBy(_.getName).map(IO.read(_)).mkString("\n\n"),
       releaseNotesPreviousVersionBodyFile := releaseNotesSourceDir.value / RELEASE_NOTES_BODY_PREVIOUS_VERSION_FILE_NAME,
-      releaseNotesPreviousVersionBody := {
-        val prevVersionBodyFile = releaseNotesPreviousVersionBodyFile.value
-        if (prevVersionBodyFile.exists())
-          IO.read(prevVersionBodyFile)
-        else
-          ""
-      },
-      releaseNotesBody := {
-        val previousVersionBody = releaseNotesPreviousVersionBody.value
-        Seq(releaseNoteVersionHeader.value, releaseNoteCurrentVersionEntries.value, if (previousVersionBody.isEmpty) "" else "\n\n", previousVersionBody)
-          .mkString
-      },
-      releaseNotes := {
-        val releaseNotesContent = Seq(releaseNoteHeader.value, releaseNotesBody.value, releaseNoteFooter.value).mkString
-        IO.write(releaseNotesFile.value, releaseNotesContent)
-      },
+      releaseNotesPreviousVersionBody <<= previousVersionBodyTask(),
+      releaseNotesBody <<= currentVersionBodyTask(),
+      releaseNotes <<= releaseNotesTask(),
       blessReleaseNotes := IO.write(releaseNotesPreviousVersionBodyFile.value, releaseNotesBody.value)
     )
+  }
+
+  private def releaseNotesTask(): Def.Initialize[Task[Unit]] = {
+    Def.task[Unit] {
+      val releaseNotesContent = Seq(releaseNotesHeader.value, releaseNotesBody.value, releaseNotesFooter.value).mkString
+      IO.write(releaseNotesFile.value, releaseNotesContent)
+    }
+  }
+
+  private def currentVersionBodyTask(): Def.Initialize[Task[String]] = {
+    Def.task[String] {
+      val previousVersionBody = releaseNotesPreviousVersionBody.value
+      Seq(releaseNotesVersionHeader.value, releaseNotesCurrentVersionEntries.value, if (previousVersionBody.isEmpty) "" else "\n\n", previousVersionBody)
+        .mkString
+    }
+  }
+
+  private def previousVersionBodyTask(): Def.Initialize[Task[String]] = {
+    Def.task[String] {
+      val prevVersionBodyFile = releaseNotesPreviousVersionBodyFile.value
+      if (prevVersionBodyFile.exists()) {
+        IO.read(prevVersionBodyFile)
+      }
+      else {
+        ""
+      }
+    }
   }
 }
