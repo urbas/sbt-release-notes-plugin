@@ -10,10 +10,14 @@ package object content {
     CompoundContent(files.sortBy(_.getName).map(FileContent.apply), separator)
   }
 
-  def overwriteIfOlder(outputFile: File, content: TimestampedContent) {
+  def overwriteIfOlder(outputFile: File, content: TimestampedContent): Unit = {
     if (outputFile.lastModified() < content.timestamp) {
       IO.write(outputFile, content.content)
     }
+  }
+
+  def overwrite(outputFile: File, content: TimestampedContent): Unit = {
+    IO.write(outputFile, content.content)
   }
 
   def toContentDef(string: Def.Initialize[String]): Def.Initialize[TimestampedContent] = {

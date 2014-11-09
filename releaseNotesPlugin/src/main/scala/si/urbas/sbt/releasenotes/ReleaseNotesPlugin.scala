@@ -62,7 +62,7 @@ object ReleaseNotesPlugin extends AutoPlugin {
 
   private def blessReleaseNotesTask(): Def.Initialize[Task[Unit]] = {
     Def.task[Unit] {
-      overwriteIfOlder(releaseNotesPreviousVersionFile.value, releaseNotesBody.value)
+      overwrite(releaseNotesPreviousVersionFile.value, releaseNotesBody.value)
     }
   }
 

@@ -1,11 +1,9 @@
 package si.urbas.sbt.releasenotes.test
 
 import sbt._
-import si.urbas.sbt.releasenotes.ReleaseNotesPlugin
+import si.urbas.sbt.releasenotes.{ReleaseNotesStrategy, ReleaseNotesPlugin}
 
-object ReleaseNotesSelfTestPlugin extends AutoPlugin {
-
-  override def requires: Plugins = ReleaseNotesPlugin
+object ReleaseNotesSelfTestPlugin extends ReleaseNotesStrategy {
 
   override def projectSettings: Seq[Def.Setting[_]] = {
     Seq(
