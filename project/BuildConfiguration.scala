@@ -4,6 +4,7 @@ import sbt._
 import xerial.sbt.Sonatype.SonatypeKeys._
 import xerial.sbt.Sonatype.sonatypeSettings
 import sbtrelease.ReleasePlugin._
+import si.urbas.sbt.releasenotes._
 
 object BuildConfiguration extends Build {
 
@@ -36,6 +37,7 @@ object BuildConfiguration extends Build {
     .aggregate(releaseNotesPlugin)
     .settings(publish := {})
     .settings(publishLocal := {})
+    .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
     .settings(scriptedSettings ++ sonatypeSettings ++ releaseSettings: _*)
