@@ -17,13 +17,13 @@ automated releases (e.g.: releases with continuous integration).
 
 2. Choose your [release notes format](#formats).
 
-3. __Optional__: Choose your [release notes strategy](#strategies).
+3. __Optional__: Choose your [release notes strategies](#strategies).
 
-4. Put the selected format and strategy into your project. Add the following to your `build.sbt` file:
+4. Put the selected format and strategies into your project. Add the following to your `build.sbt` file:
 
   ```scala
   val root = project.in(".")
-    .enablePlugins(<Selected format>, <Selected strategy>)
+    .enablePlugins(<Selected format>, <Selected strategy 1>, <Selected strategy 2>, ... , <Selected strategy N>)
   ```
 
 An example configuration suitable for GitHub repositories:
@@ -55,11 +55,10 @@ __RST__:
 - Release note entries: `src/releasenotes/*.rst`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.rst`
 
-__Plain__:
+__Write your own__:
 
-- Format name: `PlainReleaseNotesFormat(header, perVersionHeader, footer)`
-- Release note entries: `src/releasenotes/*.rst`
-- Default release notes location: `target/releasenotes/RELEASE_NOTES.rst`
+Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/RstReleaseNotesFormat.scala) or
+[Markdown](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/MdReleaseNotesFormat.scala) as examples.
 
 ### Strategies
 
@@ -67,4 +66,5 @@ __Root folder__ (suitable for GitHub-style repositories):
 
 - Strategy name: `RootFolderReleaseNotesStrategy`
 
-Places the release notes file into the build's root folder.
+Places the release notes file into the build's root folder. For example, if you use the [Markdown](#markdown) format,
+then the file `RELEASE_NOTES.md` will be placed in the topmost folder of your project.

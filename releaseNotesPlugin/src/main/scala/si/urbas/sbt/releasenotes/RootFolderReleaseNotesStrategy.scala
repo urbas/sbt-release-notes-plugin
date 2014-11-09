@@ -3,9 +3,7 @@ package si.urbas.sbt.releasenotes
 import sbt.Keys._
 import sbt._
 
-object RootFolderReleaseNotesStrategy extends AutoPlugin {
-
-  override def requires: Plugins = ReleaseNotesPlugin
+object RootFolderReleaseNotesStrategy extends ReleaseNotesStrategy {
 
   import si.urbas.sbt.releasenotes.ReleaseNotesPlugin.autoImport._
 

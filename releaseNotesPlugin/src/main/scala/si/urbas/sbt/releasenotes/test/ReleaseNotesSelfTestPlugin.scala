@@ -14,7 +14,7 @@ object ReleaseNotesSelfTestPlugin extends AutoPlugin {
         assertFilesHaveSameContents("release notes", file("expectedReleaseNotes"), releaseNotesFile)
       },
       TaskKey[Unit]("assertBlessedReleaseNotes") := {
-        val blessedReleaseNotesBodyFile = ReleaseNotesPlugin.autoImport.releaseNotesPreviousVersionBodyFile.value
+        val blessedReleaseNotesBodyFile = ReleaseNotesPlugin.autoImport.releaseNotesPreviousVersionFile.value
         assertFilesHaveSameContents("blessed release notes file", file("expectedBlessedReleaseNotes"), blessedReleaseNotesBodyFile)
       }
     )
