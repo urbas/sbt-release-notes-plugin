@@ -49,6 +49,18 @@ __Markdown__:
 - Release note entries: `src/releasenotes/*.md`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.md`
 
+__RST__:
+
+- Format name: `RstReleaseNotesFormat`
+- Release note entries: `src/releasenotes/*.rst`
+- Default release notes location: `target/releasenotes/RELEASE_NOTES.rst`
+
+__Plain__:
+
+- Format name: `PlainReleaseNotesFormat(header, perVersionHeader, footer)`
+- Release note entries: `src/releasenotes/*.rst`
+- Default release notes location: `target/releasenotes/RELEASE_NOTES.rst`
+
 ### Strategies
 
 __Root folder__ (suitable for GitHub-style repositories):
