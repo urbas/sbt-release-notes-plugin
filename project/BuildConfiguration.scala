@@ -37,7 +37,7 @@ object BuildConfiguration extends Build {
     .aggregate(releaseNotesPlugin)
     .settings(publish := {})
     .settings(publishLocal := {})
-    .settings(releaseSettings: _*)
+    .settings(sonatypeSettings ++ releaseSettings: _*)
     .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
