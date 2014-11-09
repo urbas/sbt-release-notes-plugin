@@ -12,5 +12,6 @@ $ touch target/releasenotes/RELEASE_NOTES.rst
 > releaseNotes
 
 # Check that the release notes file is overwritten when the previous version release notes are newer
+$ sleep 1000
 $ touch src/releasenotes/releaseNotesBody.previousVersion
 -> releaseNotes
