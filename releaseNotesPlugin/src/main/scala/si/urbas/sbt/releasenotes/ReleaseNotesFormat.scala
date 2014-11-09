@@ -8,7 +8,7 @@ class ReleaseNotesFormat(header: Def.Initialize[String] = DEFAULT_HEADER,
                          versionHeader: Def.Initialize[String] = DEFAULT_VERSION_HEADER,
                          footer: Def.Initialize[String] = EMPTY_FOOTER,
                          releaseNotesFileName: Def.Initialize[String] = RELEASE_NOTES_FILE_NAME,
-                         releaseNotesEntriesIncludeFilter: FileFilter = RELEASE_NOTES_ENTRIES_INCLUDE_FILTER) extends AutoPlugin {
+                         releaseNotesEntriesIncludeFilter: FileFilter) extends AutoPlugin {
 
   override def requires: Plugins = ReleaseNotesPlugin
 
@@ -26,7 +26,6 @@ class ReleaseNotesFormat(header: Def.Initialize[String] = DEFAULT_HEADER,
 }
 
 object ReleaseNotesFormat {
-  val RELEASE_NOTES_ENTRIES_INCLUDE_FILTER = "*"
   val EMPTY_FOOTER = Def.value("")
   val DEFAULT_HEADER = Def.value("Release notes\n\n\n")
   val DEFAULT_VERSION_HEADER = version { version => s"$version\n\n"}
