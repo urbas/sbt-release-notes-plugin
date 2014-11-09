@@ -85,7 +85,7 @@ then the file `RELEASE_NOTES.md` will be placed in the topmost folder of your pr
 - __Strategy name__: `SphinxReleaseNotesStrategy`
 
 This strategy is suitable for use with the [sbt-site plugin](https://github.com/sbt/sbt-site) and its Sphinx support).
-See [the sphinx example](docs).
+See [the sphinx example](samples/sphinx).
 
 Does not produce blessed release notes. This strategy outputs the release notes file into `src/sphinx/releaseNotes.rst` (instead
 of `target/releasenotes/RELEASE_NOTES.rst`).
