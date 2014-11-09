@@ -1,5 +1,3 @@
-import com.typesafe.sbt.site.SphinxSupport
-
 organization := "si.urbas"
 
 name := "sbt-release-notes-docs"
@@ -13,4 +11,6 @@ site.settings
 
 site.sphinxSupport()
 
-SphinxSupport.generate.in(SphinxSupport.Sphinx) <<= SphinxSupport.generate.in(SphinxSupport.Sphinx).dependsOn(ReleaseNotesPlugin.autoImport.releaseNotes)
+import com.typesafe.sbt.site.SphinxSupport._
+
+generate.in(Sphinx) <<= generate.in(Sphinx).dependsOn(releaseNotes)

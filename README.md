@@ -90,4 +90,13 @@ See [the sphinx example](samples/sphinx).
 Does not produce blessed release notes. This strategy outputs the release notes file into `src/sphinx/releaseNotes.rst` (instead
 of `target/releasenotes/RELEASE_NOTES.rst`).
 
-You can use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
+You can add this to your `build.sbt` file, if you want the release notes to be generated before Sphinx generates the
+documentation:
+
+```scala
+import com.typesafe.sbt.site.SphinxSupport._
+
+generate.in(Sphinx) <<= generate.in(Sphinx).dependsOn(releaseNotes)
+```
+
+Or you can use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.

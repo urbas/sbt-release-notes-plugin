@@ -2,10 +2,9 @@ package si.urbas.sbt.releasenotes
 
 import sbt.Keys._
 import sbt._
+import si.urbas.sbt.releasenotes.ReleaseNotesPlugin._
 
 object SphinxReleaseNotesStrategy extends ReleaseNotesStrategy {
-
-  import si.urbas.sbt.releasenotes.ReleaseNotesPlugin.autoImport._
 
   override def requires: Plugins = super.requires && RstReleaseNotesFormat
 
