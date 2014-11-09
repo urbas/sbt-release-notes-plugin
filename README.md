@@ -14,6 +14,8 @@ automated releases (e.g.: releases with continuous integration).
 1. Add this to your `project/plugins.sbt`:
 
   ```scala
+  resolvers += "Sonatype Public Releases" at "https://oss.sonatype.org/content/groups/public/"
+  
   addSbtPlugin("si.urbas" % "sbt-release-notes-plugin" % "0.0.1")
   ```
 
