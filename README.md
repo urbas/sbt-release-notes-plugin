@@ -48,6 +48,8 @@ to copy the release notes anywhere).
 
 2. prepends the current release note entries to the `src/releasenotes/releaseNotesBody.previousVersion` file.
 
+3. __DANGER__: deletes all the release notes entry files.
+
 ### Formats
 
 __Markdown__:

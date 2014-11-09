@@ -1,0 +1,6 @@
+# Prepare for the next release version.
+$ exists src/releasenotes/note1.md
+$ exists src/releasenotes/note2.md
+> blessReleaseNotes
+-$ exists src/releasenotes/note1.md
+-$ exists src/releasenotes/note2.md

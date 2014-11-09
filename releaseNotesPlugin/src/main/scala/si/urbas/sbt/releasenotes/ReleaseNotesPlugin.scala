@@ -49,7 +49,8 @@ object ReleaseNotesPlugin extends AutoPlugin {
       releaseNotesBody <<= currentVersionBodyTask(),
       releaseNotes <<= releaseNotesTask(),
       blessReleaseNotes <<= blessReleaseNotesTask(),
-      releaseNotesBlessedFile := None
+      releaseNotesBlessedFile := None,
+      watchSources ++= releaseNotesSources.value :+ releaseNotesPreviousVersionBodyFile.value
     )
   }
 
