@@ -69,13 +69,14 @@ object ReleaseNotesPlugin extends AutoPlugin {
   }
 
   private def blessReleaseNotesTask(): Def.Initialize[Task[Unit]] = {
-    (releaseNotes, releaseNotesFile, releaseNotesPreviousVersionBodyFile, releaseNotesBlessedFile, releaseNotesBody).map {
-      (releaseNotes, releaseNotesFile, releaseNotesPreviousVersionBodyFile, releaseNotesBlessedFile, releaseNotesBody) =>
+    (releaseNotes, releaseNotesFile, releaseNotesPreviousVersionBodyFile, releaseNotesBlessedFile, releaseNotesBody, releaseNotesSources).map {
+      (releaseNotes, releaseNotesFile, releaseNotesPreviousVersionBodyFile, releaseNotesBlessedFile, releaseNotesBody, releaseNotesSources) =>
         overwrite(releaseNotesPreviousVersionBodyFile, releaseNotesBody)
         releaseNotesBlessedFile.map {
           blessedFile =>
             ifSourceNewer(releaseNotesFile, blessedFile)(IO.copyFile(_, _))
         }
+        IO.delete(releaseNotesSources)
     }
   }
 
