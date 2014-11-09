@@ -1,1 +1,6 @@
+0.0.1
+-----
+
+* Added Sphinx documentation with release notes.
+
 * Added a new strategy: ``SphinxReleaseNotesStrategy``. Also documented in README.md.

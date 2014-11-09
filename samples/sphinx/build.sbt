@@ -2,7 +2,7 @@ organization := "si.urbas"
 
 name := "sbt-release-notes-docs"
 
-version := IO.read(file("../LATEST_RELEASE_VERSION")).trim
+version := "0.0.2-SNAPSHOT"
 
 val docs = project.in(file("."))
   .enablePlugins(SphinxReleaseNotesStrategy)

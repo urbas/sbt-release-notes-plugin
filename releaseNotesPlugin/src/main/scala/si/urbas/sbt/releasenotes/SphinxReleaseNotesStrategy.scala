@@ -14,7 +14,7 @@ object SphinxReleaseNotesStrategy extends ReleaseNotesStrategy {
       releaseNotesFileName := "releaseNotes.rst",
       releaseNotesDir := sourceDirectory.value / "sphinx",
       releaseNotesBlessedFile := None,
-      cleanFiles <+= releaseNotesFile
+      cleanFiles += releaseNotesFile.value
     )
   }
 }
