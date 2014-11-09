@@ -1,3 +1,5 @@
+import com.typesafe.sbt.site.SphinxSupport._
+
 organization := "si.urbas"
 
 name := "sbt-release-notes-docs"
@@ -10,7 +12,5 @@ val sphinx = project.in(file("."))
 site.settings
 
 site.sphinxSupport()
-
-import com.typesafe.sbt.site.SphinxSupport._
 
 generate.in(Sphinx) <<= generate.in(Sphinx).dependsOn(releaseNotes)
