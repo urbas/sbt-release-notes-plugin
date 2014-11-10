@@ -14,7 +14,8 @@ object BuildConfiguration extends Build {
 
   override def settings: Seq[Def.Setting[_]] = {
     super.settings ++ Seq(
-      organization := "si.urbas"
+      organization := "si.urbas",
+      version := IO.read(file(ReleaseConfiguration.VERSION_FILE)).trim
     ) ++ PublishConfiguration.globalSettings
   }
 
@@ -111,8 +112,11 @@ object PublishConfiguration {
 
 object ReleaseConfiguration {
 
+  val VERSION_FILE = "version"
+
   lazy val rootSettings: Seq[Setting[_]] = {
     releaseSettings ++ Seq(
+      versionFile := file(VERSION_FILE),
       releaseProcess <<= thisProjectRef {
         thisProject =>
           Seq[ReleaseStep](
@@ -120,12 +124,14 @@ object ReleaseConfiguration {
             inquireVersions,
             runTest,
             setReleaseVersion,
+            updateVersionFile,
             commitReleaseVersion,
             blessReleaseNotesReleaseStep(thisProject),
             commitReleaseNotesChanges,
             tagRelease,
             publishArtifacts,
             setNextVersion,
+            updateVersionFile,
             commitNextVersion,
             pushChanges
           )
@@ -137,6 +143,13 @@ object ReleaseConfiguration {
   }
 
   private lazy val commitReleaseNotesChanges = ReleaseStep(commitReleaseNotesChangesFunc)
+
+  private lazy val updateVersionFile = ReleaseStep(st => {
+    val ver = Project.extract(st).get(version)
+    val verFile = Project.extract(st).get(versionFile)
+    IO.write(verFile, ver)
+    st
+  })
 
   private def vcs(st: State): Vcs = {
     Project
