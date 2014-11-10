@@ -1,1 +1,1 @@
-addSbtPlugin("si.urbas" % "sbt-release-notes-plugin" % IO.read(file("../../LATEST_RELEASE_VERSION")))
+addSbtPlugin("si.urbas" % "sbt-release-notes-plugin" % IO.read(file("../../version")))
