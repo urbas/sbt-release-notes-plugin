@@ -4,10 +4,9 @@ Please see [the release notes](RELEASE_NOTES.md) for the latest version of this 
 
 [![Build Status](https://travis-ci.org/urbas/sbt-release-notes-plugin.svg?branch=master)](https://travis-ci.org/urbas/sbt-release-notes-plugin)
 
-This SBT plugin generates release notes. It takes multiple small release note entry files and concatenates them into
-a complete release notes file. The small release note entry files can be added by developers for their isolated
-features. Such a separation of per-feature release notes is useful in automatic release notes generation when performing
-automated releases (e.g.: releases with continuous integration).
+This SBT plugin takes multiple small release note entry files and concatenates them into
+a complete release notes file. The entry files can be added by developers for their isolated
+features. The main use of this plugin is in automated releases (e.g.: releases with continuous integration).
 
 ## Usage
 
@@ -27,15 +26,17 @@ automated releases (e.g.: releases with continuous integration).
 
   ```scala
   val root = project.in(".")
-    .enablePlugins(<Selected format>, <Selected strategy 1>, <Selected strategy 2>, ... , <Selected strategy N>)
+    .enablePlugins(`<Selected format>`, `<Selected strategy>`)
   ```
 
-An example configuration suitable for GitHub repositories:
+  An example configuration suitable for GitHub repositories:
 
   ```scala
   val root = project.in(".")
     .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
   ```
+
+5. Place release note entries into the `src/releasenotes` folder.
 
 Now you can finally run the following SBT commands.
 
