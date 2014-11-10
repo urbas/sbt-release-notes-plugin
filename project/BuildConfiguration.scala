@@ -26,7 +26,7 @@ object BuildConfiguration extends Build {
     .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
-    .settings(scriptedSettings ++ sonatypeSettings ++ releaseSettings: _*)
+    .settings(scriptedSettings ++ sonatypeSettings ++ releaseSettings ++ PublishConfiguration.disableDocPublish: _*)
     .settings(
       name := "sbt-release-notes-plugin",
       sbtPlugin := true,
@@ -83,15 +83,20 @@ object PublishConfiguration {
       </developers>
   }
 
-  def globalSettings: Seq[Setting[_]] = {
+  def disableDocPublish: Seq[Setting[_]] = {
     Seq(
-      pomExtra := pomExtraSettings,
       // NOTE: We have to package documentation to conform to Sonatype's Repo policy
       publishArtifact in(Compile, packageDoc) := true,
       publishArtifact in(Compile, packageSrc) := true,
       publishArtifact in(Test, packageSrc) := false,
       publishArtifact in(Test, packageDoc) := false,
-      sources.in(Compile, doc) := Nil,
+      sources.in(Compile, doc) := Nil
+    )
+  }
+
+  def globalSettings: Seq[Setting[_]] = {
+    disableDocPublish ++ Seq(
+      pomExtra := pomExtraSettings,
       credentials ++= {
         if (credentialsFile.exists()) Seq(Credentials(credentialsFile)) else Nil
       },
