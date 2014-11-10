@@ -12,94 +12,17 @@ import xerial.sbt.Sonatype.sonatypeSettings
 
 object BuildConfiguration extends Build {
 
-  val projectName = "sbt-release-notes-plugin"
-  val projectUrl = s"https://github.com/urbas/$projectName"
-  val projectScmUrl = s"git@github.com:urbas/$projectName.git"
-  val ownerName = "urbas"
-  val ownerUrl = "https://github.com/urbas"
-  val credentialsFile = Path.userHome / ".ivy2" / ".credentials"
-
   override def settings: Seq[Def.Setting[_]] = {
     super.settings ++ Seq(
-      organization := "si.urbas",
-      pomExtra := pomExtraSettings,
-      // NOTE: We have to package documentation to conform to Sonatype's Repo policy
-      publishArtifact in(Compile, packageDoc) := true,
-      publishArtifact in(Compile, packageSrc) := true,
-      publishArtifact in(Test, packageSrc) := false,
-      publishArtifact in(Test, packageDoc) := false,
-      sources.in(Compile, doc) := Nil,
-      credentials ++= {
-        if (credentialsFile.exists()) Seq(Credentials(credentialsFile)) else Nil
-      },
-      publishMavenStyle := true,
-      profileName := "org.xerial"
-    )
+      organization := "si.urbas"
+    ) ++ PublishConfiguration.globalSettings
   }
 
   lazy val root = project.in(file("."))
     .aggregate(releaseNotesPlugin)
-    .settings(publish := {})
-    .settings(publishLocal := {})
-    .settings(sonatypeSettings ++ releaseSettings: _*)
-    .settings(
-      releaseProcess <<= thisProjectRef {
-        ref =>
-          Seq[ReleaseStep](
-            checkSnapshotDependencies,
-            inquireVersions,
-            runTest,
-            setReleaseVersion,
-            commitReleaseVersion,
-            blessReleaseNotesReleaseStep(ref),
-            commitReleaseNotesChanges,
-            tagRelease,
-            publishArtifacts,
-            setNextVersion,
-            commitNextVersion,
-            pushChanges
-          )
-      })
+    .settings(PublishConfiguration.rootSettings: _*)
+    .settings(ReleaseConfiguration.rootSettings: _*)
     .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
-
-  lazy val blessReleaseNotesReleaseStep = (ref: ProjectRef) => ReleaseStep(
-    action = releaseTask(blessReleaseNotes.in(ref))
-  )
-
-  lazy val commitReleaseNotesChanges = ReleaseStep(commitReleaseNotesChangesFunc)
-
-  private def vcs(st: State): Vcs = {
-    Project
-      .extract(st)
-      .get(versionControlSystem)
-      .getOrElse(sys.error("Aborting release. Working directory is not a repository of a recognized VCS."))
-  }
-
-  val commitReleaseNotesChangesFunc = { st: State =>
-    val blessedFile = Project.extract(st).get(releaseNotesBlessedFile)
-    val releaseNotesDir = Project.extract(st).get(releaseNotesSourceDir)
-    val base = vcs(st).baseDir
-
-    blessedFile.foreach(addFileToVcs(st, base, _))
-    addAllFilesUnderToVcs(st, base, releaseNotesDir)
-
-    val status = (vcs(st).status !!) trim
-
-    if (status.nonEmpty) {
-      vcs(st).commit("Prepared release notes.") ! st.log
-    }
-    st
-  }
-
-  private def addFileToVcs(st: State, base: File, file: File): String = {
-    val relativePath = IO.relativize(base, file).getOrElse(s"The release notes file '$file' is outside of this VCS repository with base directory '$base'!")
-    vcs(st).add(relativePath) !! st.log
-  }
-
-  private def addAllFilesUnderToVcs(st: State, base: File, file: File): String = {
-    val relativePath = IO.relativize(base, file).getOrElse(s"The release notes file '$file' is outside of this VCS repository with base directory '$base'!")
-    vcs(st).cmd(Seq("add", "-A", relativePath): _*) !! st.log
-  }
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
     .settings(scriptedSettings ++ sonatypeSettings ++ releaseSettings: _*)
@@ -109,6 +32,17 @@ object BuildConfiguration extends Build {
       scriptedLaunchOpts ++= Seq("-Xmx1024M", "-XX:MaxPermSize=256M", "-Dplugin.version=" + version.value),
       scriptedBufferLog := false
     )
+
+}
+
+object PublishConfiguration {
+
+  private val projectName = "sbt-release-notes-plugin"
+  private val projectUrl = s"https://github.com/urbas/$projectName"
+  private val projectScmUrl = s"git@github.com:urbas/$projectName.git"
+  private val ownerName = "urbas"
+  private val ownerUrl = "https://github.com/urbas"
+  private val credentialsFile = Path.userHome / ".ivy2" / ".credentials"
 
   private lazy val pomExtraSettings = {
     <url>
@@ -148,4 +82,92 @@ object BuildConfiguration extends Build {
       </developers>
   }
 
+  def globalSettings: Seq[Setting[_]] = {
+    Seq(
+      pomExtra := pomExtraSettings,
+      // NOTE: We have to package documentation to conform to Sonatype's Repo policy
+      publishArtifact in(Compile, packageDoc) := true,
+      publishArtifact in(Compile, packageSrc) := true,
+      publishArtifact in(Test, packageSrc) := false,
+      publishArtifact in(Test, packageDoc) := false,
+      sources.in(Compile, doc) := Nil,
+      credentials ++= {
+        if (credentialsFile.exists()) Seq(Credentials(credentialsFile)) else Nil
+      },
+      publishMavenStyle := true,
+      profileName := "org.xerial"
+    )
+  }
+
+  def rootSettings: Seq[Setting[_]] = {
+    Seq(
+      publish := {},
+      publishLocal := {}
+    ) ++
+      sonatypeSettings
+  }
+
+}
+
+object ReleaseConfiguration {
+
+  lazy val rootSettings: Seq[Setting[_]] = {
+    releaseSettings ++ Seq(
+      releaseProcess <<= thisProjectRef {
+        thisProject =>
+          Seq[ReleaseStep](
+            checkSnapshotDependencies,
+            inquireVersions,
+            runTest,
+            setReleaseVersion,
+            commitReleaseVersion,
+            blessReleaseNotesReleaseStep(thisProject),
+            commitReleaseNotesChanges,
+            tagRelease,
+            publishArtifacts,
+            setNextVersion,
+            commitNextVersion,
+            pushChanges
+          )
+      })
+  }
+
+  private def blessReleaseNotesReleaseStep(ref: ProjectRef): ReleaseStep = {
+    ReleaseStep(releaseTask(blessReleaseNotes.in(ref)))
+  }
+
+  private lazy val commitReleaseNotesChanges = ReleaseStep(commitReleaseNotesChangesFunc)
+
+  private def vcs(st: State): Vcs = {
+    Project
+      .extract(st)
+      .get(versionControlSystem)
+      .getOrElse(sys.error("Aborting release. Working directory is not a repository of a recognized VCS."))
+  }
+
+  private def commitReleaseNotesChangesFunc(st: State): State = {
+    val blessedFile = Project.extract(st).get(releaseNotesBlessedFile)
+    val releaseNotesDir = Project.extract(st).get(releaseNotesSourceDir)
+    val base = vcs(st).baseDir
+
+    blessedFile.foreach(addFileToVcs(st, base, _))
+    addDirToVcs(st, base, releaseNotesDir)
+
+    val gitStatus = (vcs(st).status !!) trim
+
+    if (gitStatus.nonEmpty) {
+      vcs(st).commit("Prepared release notes.") ! st.log
+    }
+    st
+  }
+
+  private def addFileToVcs(st: State, base: File, file: File): String = {
+    val relativePath = IO.relativize(base, file).getOrElse(s"The release notes file '$file' is outside of this VCS repository with base directory '$base'!")
+    vcs(st).add(relativePath) !! st.log
+  }
+
+  private def addDirToVcs(st: State, base: File, dir: File): String = {
+    val relativePath = IO.relativize(base, dir).getOrElse(s"The release notes file '$dir' is outside of this VCS repository with base directory '$base'!")
+    vcs(st).cmd(Seq("add", "-A", relativePath): _*) !! st.log
+  }
 }
