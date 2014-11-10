@@ -1,0 +1,5 @@
+# Check that the release notes file is created in the target folder.
+> releaseNotes
+$ exists src/sphinx/releaseNotes.rst
+> clean
+-$ exists src/sphinx/releaseNotes.rst
