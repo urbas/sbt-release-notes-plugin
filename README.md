@@ -105,3 +105,12 @@ generate.in(Sphinx) <<= generate.in(Sphinx).dependsOn(releaseNotes)
 ```
 
 Or you can use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
+
+__Caveats__:
+
+- Cleaning the `src/sphinx/releaseNotes.rst` currently does not work. To fix this, please add the following to your
+  `build.sbt`:
+
+  ```scala
+  cleanFiles += releaseNotesFile.value
+  ```
