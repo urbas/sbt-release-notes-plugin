@@ -1,5 +1,6 @@
 import sbt._
 import si.urbas.sbt.releasenotes._
+import si.urbas.sbt.releasenotes.formats.RstReleaseNotesFormat
 import si.urbas.sbt.releasenotes.test._
 
 object ThrowIfReleaseNotesWritten extends ReleaseNotesStrategy {
@@ -8,7 +9,7 @@ object ThrowIfReleaseNotesWritten extends ReleaseNotesStrategy {
 
   override def projectSettings: Seq[Def.Setting[_]] = {
     Seq(
-      releaseNotesCurrentVersionBody <<= releaseNotesCurrentVersionBody.map(_.map(_ => sys.error(s"The content of release notes was overwritten.")))
+      releaseNotesCurrentVersionBody <<= releaseNotesCurrentVersionBody.map(_.transform(_ => sys.error(s"The content of release notes was overwritten.")))
     )
   }
 

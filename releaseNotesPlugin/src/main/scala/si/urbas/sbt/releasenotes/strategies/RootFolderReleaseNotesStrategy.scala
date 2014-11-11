@@ -1,7 +1,8 @@
-package si.urbas.sbt.releasenotes
+package si.urbas.sbt.releasenotes.strategies
 
 import sbt.Keys._
 import sbt._
+import si.urbas.sbt.releasenotes.ReleaseNotesStrategy
 
 object RootFolderReleaseNotesStrategy extends ReleaseNotesStrategy {
 

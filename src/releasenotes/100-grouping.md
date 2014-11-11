@@ -1,0 +1,3 @@
+__New feature__:
+
+- Grouping of release notes entries. Just add `enablePlugins(GroupReleaseNotesByFirstLine)` to your `build.sbt`.

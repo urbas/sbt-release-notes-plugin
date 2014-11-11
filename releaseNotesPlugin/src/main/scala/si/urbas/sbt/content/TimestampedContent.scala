@@ -5,7 +5,7 @@ trait TimestampedContent {
 
   val timestamp: Long
 
-  def map(f: String => String): TimestampedContent = MappedContent(this, f)
+  def transform(f: String => String): TimestampedContent = MappedContent(this, f)
 
   def +(otherContent: TimestampedContent): TimestampedContent = CompoundContent(Seq(this, otherContent))
 }
