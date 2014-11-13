@@ -1,5 +1,7 @@
 import sbt._
 import si.urbas.sbt.releasenotes._
+import si.urbas.sbt.releasenotes.formats.MdReleaseNotesFormat
+import si.urbas.sbt.releasenotes.strategies.RootFolderReleaseNotesStrategy
 import si.urbas.sbt.releasenotes.test._
 
 object BuildConfiguration extends Build {

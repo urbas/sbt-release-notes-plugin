@@ -1,8 +1,10 @@
-package si.urbas.sbt.releasenotes
+package si.urbas.sbt.releasenotes.strategies
 
 import sbt.Keys._
 import sbt._
 import si.urbas.sbt.releasenotes.ReleaseNotesPlugin._
+import si.urbas.sbt.releasenotes.ReleaseNotesStrategy
+import si.urbas.sbt.releasenotes.formats.RstReleaseNotesFormat
 
 object SphinxReleaseNotesStrategy extends ReleaseNotesStrategy {
 

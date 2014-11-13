@@ -72,7 +72,7 @@ __RST__:
 __Write your own__:
 
 Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/RstReleaseNotesFormat.scala) or
-[Markdown](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/MdReleaseNotesFormat.scala) as examples.
+[Markdown](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/formats/MdReleaseNotesFormat.scala) as examples.
 
 ### Strategies
 
@@ -105,3 +105,19 @@ generate.in(Sphinx) <<= generate.in(Sphinx).dependsOn(releaseNotes)
 ```
 
 Or you can use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
+
+__Caveats__:
+
+- Cleaning the `src/sphinx/releaseNotes.rst` currently does not work. To fix this, please add the following to your
+  `build.sbt`:
+
+  ```scala
+  cleanFiles += releaseNotesFile.value
+  ```
+
+#### Grouping by first line
+
+- __Strategy name__: `GroupReleaseNotesByFirstLine`
+
+This strategy removes the first line from each release note entry, find all entries that start with the same line,
+and places them together into the release notes for the current version.

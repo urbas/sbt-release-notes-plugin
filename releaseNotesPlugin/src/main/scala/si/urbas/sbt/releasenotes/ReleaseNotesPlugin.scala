@@ -37,7 +37,7 @@ object ReleaseNotesPlugin extends AutoPlugin with ReleaseNotesPluginKeys {
     Def.task[TimestampedContent] {
       releaseNotesVersionHeader.value +
         releaseNotesCurrentVersionBody.value +
-        releaseNotesPreviousVersion.value.map(c => if (c.isEmpty) "" else s"\n\n$c")
+        releaseNotesPreviousVersion.value.transform(c => if (c.isEmpty) "" else s"\n\n$c")
     }
   }
 

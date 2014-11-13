@@ -7,7 +7,7 @@ import si.urbas.sbt.util._
 
 package object content {
 
-  def toContent(files: Seq[File], separator: String = ""): TimestampedContent = {
+  def toContent(files: Seq[File], separator: String = ""): CompoundContent = {
     CompoundContent(files.sortBy(_.getName).map(FileContent.apply), separator)
   }
 
