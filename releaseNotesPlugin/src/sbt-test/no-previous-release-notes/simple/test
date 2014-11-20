@@ -8,4 +8,4 @@ $ exists target/releasenotes/RELEASE_NOTES.md
 # Prepare for the next release version.
 > blessReleaseNotes
 $ exists src/releasenotes/releaseNotesBody.previousVersion
-> assertBlessedReleaseNotes
+> assertPreviousReleaseNotes
