@@ -57,19 +57,19 @@ to copy the release notes anywhere).
 
 ### Formats
 
-__Markdown__:
+#### Markdown
 
 - Format name: `MdReleaseNotesFormat`
 - Release note entries: `src/releasenotes/*.md`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.md`
 
-__RST__:
+#### RST
 
 - Format name: `RstReleaseNotesFormat`
 - Release note entries: `src/releasenotes/*.rst`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.rst`
 
-__Write your own__:
+#### Write your own format
 
 Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/RstReleaseNotesFormat.scala) or
 [Markdown](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/formats/MdReleaseNotesFormat.scala) as examples.
@@ -121,3 +121,9 @@ __Caveats__:
 
 This strategy removes the first line from each release note entry, find all entries that start with the same line,
 and places them together into the release notes for the current version.
+
+#### Headerless
+
+- __Strategy name__: `HeaderlessReleaseNotesStrategy`
+
+This strategy does not prepend the top header nor does it append the footer to the release notes.
