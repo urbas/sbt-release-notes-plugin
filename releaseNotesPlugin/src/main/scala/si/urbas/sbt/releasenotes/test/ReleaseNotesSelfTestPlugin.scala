@@ -11,9 +11,9 @@ object ReleaseNotesSelfTestPlugin extends ReleaseNotesStrategy {
         val releaseNotesFile = ReleaseNotesPlugin.autoImport.releaseNotesFile.value
         assertFilesHaveSameContents("release notes", file("expectedReleaseNotes"), releaseNotesFile)
       },
-      TaskKey[Unit]("assertBlessedReleaseNotes") := {
-        val blessedReleaseNotesBodyFile = ReleaseNotesPlugin.autoImport.releaseNotesPreviousVersionBodyFile.value
-        assertFilesHaveSameContents("blessed release notes file", file("expectedReleaseNotesPreviousVersionBody"), blessedReleaseNotesBodyFile)
+      TaskKey[Unit]("assertPreviousReleaseNotes") := {
+        val previousReleaseNotesBodyFile = ReleaseNotesPlugin.autoImport.releaseNotesPreviousVersionBodyFile.value
+        assertFilesHaveSameContents("blessed release notes file", file("expectedReleaseNotesPreviousVersionBody"), previousReleaseNotesBodyFile)
       }
     )
   }
