@@ -1,1 +1,1 @@
-- __New feature__: Added the `HeaderlessReleaseNotesStrategy`.
+- __New feature__: Added `HeaderlessReleaseNotesStrategy`.
