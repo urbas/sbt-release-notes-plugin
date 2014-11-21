@@ -1,5 +1,3 @@
-# Release notes
-
 ## 0.0.1
 
 - Feature: Added support for Markdown release notes.
