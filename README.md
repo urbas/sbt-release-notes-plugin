@@ -130,14 +130,6 @@ Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasen
 
   - You can also use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
 
-- __Caveats__:
-
-  - Cleaning the `src/sphinx/releaseNotes.rst` currently does not work. To fix this, please add the following to your `build.sbt`:
-
-    ```scala
-    cleanFiles += releaseNotesFile.value
-    ```
-
 #### Grouping by first line
 
 - __Strategy name__: `GroupReleaseNotesByFirstLine`

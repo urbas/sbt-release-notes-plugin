@@ -2,5 +2,4 @@
 > releaseNotes
 $ exists src/sphinx/releaseNotes.rst
 > clean
-# TODO: Unignore this test when the SBT bug gets fixed
-# -$ exists src/sphinx/releaseNotes.rst
+-$ exists src/sphinx/releaseNotes.rst
