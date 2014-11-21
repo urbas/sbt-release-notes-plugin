@@ -18,11 +18,25 @@ features. The main use of this plugin is in automated releases (e.g.: releases w
   addSbtPlugin("si.urbas" % "sbt-release-notes-plugin" % "0.0.1")
   ```
 
-2. Choose your [release notes format](#formats).
+2. Add the following to your `build.sbt` file:
 
-3. __Optional__: Choose your [release notes strategies](#strategies).
+  ```scala
+  val root = project.in(".").enablePlugins(GitHubReleaseNotesStrategy)
+  ```
 
-4. Put the selected format and strategies into your project. Add the following to your `build.sbt` file:
+3. Place release note entries into the `src/releasenotes` folder.
+
+You can now invoke [these SBT tasks](#sbt-tasks).
+
+## Advanced configuration
+
+Instead of choosing the `GitHubReleaseNotesStrategy`, you can create your own by following these steps:
+
+1. Choose your [release notes format](#formats).
+
+2. Choose your [release notes strategies](#strategies).
+
+3. Put the selected format and strategies into your project by add the following to your `build.sbt` file:
 
   ```scala
   val root = project.in(".")
@@ -35,10 +49,6 @@ features. The main use of this plugin is in automated releases (e.g.: releases w
   val root = project.in(".")
     .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
   ```
-
-5. Place release note entries into the `src/releasenotes` folder.
-
-Now you can finally run the following SBT commands.
 
 ## SBT tasks
 
