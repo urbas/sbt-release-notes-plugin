@@ -6,6 +6,7 @@ import sbtrelease.ReleasePlugin._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease._
 import si.urbas.sbt.releasenotes.ReleaseNotesPlugin._
+import si.urbas.sbt.releasenotes.strategies._
 import xerial.sbt.Sonatype.SonatypeKeys._
 import xerial.sbt.Sonatype.sonatypeSettings
 
@@ -22,6 +23,7 @@ object BuildConfiguration extends Build {
     .aggregate(releaseNotesPlugin)
     .settings(PublishConfiguration.rootSettings: _*)
     .settings(ReleaseConfiguration.rootSettings: _*)
+    .enablePlugins(GitHubReleaseNotesStrategy)
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
     .settings(scriptedSettings ++ sonatypeSettings ++ releaseSettings ++ PublishConfiguration.disableDocPublish: _*)
