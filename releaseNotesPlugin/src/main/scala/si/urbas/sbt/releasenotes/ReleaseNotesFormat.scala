@@ -11,8 +11,9 @@ class ReleaseNotesFormat(header: Def.Initialize[TimestampedContent] = DEFAULT_HE
                          footer: Def.Initialize[TimestampedContent] = EMPTY_FOOTER,
                          overriddenReleaseNotesFileName: String = ReleaseNotesPlugin.DEFAULT_RELEASE_NOTES_FILE) extends AutoPlugin {
 
-  override def requires: Plugins = ReleaseNotesPlugin
-
+  override def requires: Plugins = {
+    ReleaseNotesPlugin
+  }
 
   override def projectSettings: Seq[Def.Setting[_]] = {
     Seq(

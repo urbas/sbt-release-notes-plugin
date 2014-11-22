@@ -4,6 +4,8 @@ import sbt.{Plugins, AutoPlugin}
 
 class ReleaseNotesStrategy extends AutoPlugin {
 
-  override def requires: Plugins = ReleaseNotesPlugin
+  override def requires: Plugins = {
+    ReleaseNotesPlugin
+  }
 
 }
