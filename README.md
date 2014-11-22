@@ -10,12 +10,12 @@ features. The main use of this plugin is in automated releases (e.g.: releases w
 
 ## Usage
 
-1. Add this to your `project/plugins.sbt`:
+1. Add this to your `project/plugins.sbt` (see [latest version](RELEASE_NOTES.md)):
 
   ```scala
   resolvers += "Sonatype Public Releases" at "https://oss.sonatype.org/content/groups/public/"
   
-  addSbtPlugin("si.urbas" % "sbt-release-notes-plugin" % "0.0.1")
+  addSbtPlugin("si.urbas" % "sbt-release-notes-plugin" % "<LATEST VERSION>")
   ```
 
 2. Add the following to your `build.sbt` file:
