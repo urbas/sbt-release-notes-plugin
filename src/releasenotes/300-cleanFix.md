@@ -1,1 +1,0 @@
-- __Bugfix__: The Sphinx strategy now correctly cleans the release notes file.
