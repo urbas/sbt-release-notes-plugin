@@ -2,6 +2,7 @@ package si.urbas.sbt.releasenotes
 
 import sbt.Keys._
 import sbt._
+import sbt.plugins.JvmPlugin
 import si.urbas.sbt.content._
 import si.urbas.sbt.util._
 
@@ -12,6 +13,10 @@ object ReleaseNotesPlugin extends AutoPlugin with ReleaseNotesPluginKeys {
   val DEFAULT_RELEASE_NOTES_FILE = "RELEASE_NOTES"
 
   object autoImport extends ReleaseNotesPluginKeys
+
+  override def requires: Plugins = {
+    super.requires && JvmPlugin
+  }
 
   override def projectSettings: Seq[Def.Setting[_]] = {
     Seq(

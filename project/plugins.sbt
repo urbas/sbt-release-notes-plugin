@@ -1,4 +1,7 @@
-resolvers += "Sonatype Public Releases" at "https://oss.sonatype.org/content/groups/public/"
+resolvers ++= Seq(
+  "Sonatype Public Releases" at "https://oss.sonatype.org/content/groups/public/",
+  "Sonatype Public Snaphots" at "https://oss.sonatype.org/content/repositories/snapshots/"
+)
 
 libraryDependencies += "org.scala-sbt" % "scripted-plugin" % sbtVersion.value
 

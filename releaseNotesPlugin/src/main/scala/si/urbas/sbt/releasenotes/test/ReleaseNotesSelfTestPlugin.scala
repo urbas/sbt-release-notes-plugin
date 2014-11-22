@@ -1,19 +1,21 @@
 package si.urbas.sbt.releasenotes.test
 
 import sbt._
-import si.urbas.sbt.releasenotes.{ReleaseNotesStrategy, ReleaseNotesPlugin}
+import si.urbas.sbt.releasenotes._
+import si.urbas.sbt.releasenotes.ReleaseNotesPlugin._
 
 object ReleaseNotesSelfTestPlugin extends ReleaseNotesStrategy {
 
   override def projectSettings: Seq[Def.Setting[_]] = {
     Seq(
       TaskKey[Unit]("assertReleaseNotes") := {
-        val releaseNotesFile = ReleaseNotesPlugin.autoImport.releaseNotesFile.value
-        assertFilesHaveSameContents("release notes", file("expectedReleaseNotes"), releaseNotesFile)
+        assertFilesHaveSameContents("release notes", file("expectedReleaseNotes"), releaseNotesFile.value)
+      },
+      TaskKey[Unit]("assertPreviousReleaseNotes") := {
+        assertFilesHaveSameContents("previous release notes file", file("expectedReleaseNotesPreviousVersionBody"), releaseNotesPreviousVersionBodyFile.value)
       },
       TaskKey[Unit]("assertBlessedReleaseNotes") := {
-        val blessedReleaseNotesBodyFile = ReleaseNotesPlugin.autoImport.releaseNotesPreviousVersionBodyFile.value
-        assertFilesHaveSameContents("blessed release notes file", file("expectedReleaseNotesPreviousVersionBody"), blessedReleaseNotesBodyFile)
+        assertFilesHaveSameContents("blessed release notes file", file("expectedBlessedReleaseNotes"), releaseNotesBlessedFile.value.get)
       }
     )
   }

@@ -6,7 +6,6 @@ import sbtrelease.ReleasePlugin._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease._
 import si.urbas.sbt.releasenotes.ReleaseNotesPlugin._
-import si.urbas.sbt.releasenotes._
 import xerial.sbt.Sonatype.SonatypeKeys._
 import xerial.sbt.Sonatype.sonatypeSettings
 
@@ -23,14 +22,13 @@ object BuildConfiguration extends Build {
     .aggregate(releaseNotesPlugin)
     .settings(PublishConfiguration.rootSettings: _*)
     .settings(ReleaseConfiguration.rootSettings: _*)
-    .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
     .settings(scriptedSettings ++ sonatypeSettings ++ releaseSettings ++ PublishConfiguration.disableDocPublish: _*)
     .settings(
       name := "sbt-release-notes-plugin",
       sbtPlugin := true,
-      scriptedLaunchOpts ++= Seq("-Xmx1024M", "-XX:MaxPermSize=256M", "-Dplugin.version=" + version.value),
+      scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value),
       scriptedBufferLog := false
     )
 

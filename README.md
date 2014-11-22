@@ -18,11 +18,25 @@ features. The main use of this plugin is in automated releases (e.g.: releases w
   addSbtPlugin("si.urbas" % "sbt-release-notes-plugin" % "0.0.1")
   ```
 
-2. Choose your [release notes format](#formats).
+2. Add the following to your `build.sbt` file:
 
-3. __Optional__: Choose your [release notes strategies](#strategies).
+  ```scala
+  val root = project.in(".").enablePlugins(GitHubReleaseNotesStrategy)
+  ```
 
-4. Put the selected format and strategies into your project. Add the following to your `build.sbt` file:
+3. Place release note entries into the `src/releasenotes` folder.
+
+You can now invoke [these SBT tasks](#sbt-tasks).
+
+## Advanced configuration
+
+Instead of choosing the `GitHubReleaseNotesStrategy`, you can create your own by following these steps:
+
+1. Choose your [release notes format](#formats).
+
+2. Choose your [release notes strategies](#strategies).
+
+3. Put the selected format and strategies into your project by add the following to your `build.sbt` file:
 
   ```scala
   val root = project.in(".")
@@ -35,10 +49,6 @@ features. The main use of this plugin is in automated releases (e.g.: releases w
   val root = project.in(".")
     .enablePlugins(MdReleaseNotesFormat, RootFolderReleaseNotesStrategy)
   ```
-
-5. Place release note entries into the `src/releasenotes` folder.
-
-Now you can finally run the following SBT commands.
 
 ## SBT tasks
 
@@ -57,67 +67,77 @@ to copy the release notes anywhere).
 
 ### Formats
 
-__Markdown__:
+#### Markdown
 
 - Format name: `MdReleaseNotesFormat`
 - Release note entries: `src/releasenotes/*.md`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.md`
 
-__RST__:
+#### RST
 
 - Format name: `RstReleaseNotesFormat`
 - Release note entries: `src/releasenotes/*.rst`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.rst`
 
-__Write your own__:
+#### Write your own format
 
 Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/RstReleaseNotesFormat.scala) or
 [Markdown](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/formats/MdReleaseNotesFormat.scala) as examples.
 
 ### Strategies
 
+#### GitHub
+
+- __Strategy name__: `GitHubReleaseNotesStrategy`
+
+- __Task behaviour__:
+
+  - Task `releaseNotes`: this task produces the `target/releasenotes/RELEASE_NOTES.md` file by prepending the entries from `src/releasenotes` to the `RELEASE_NOTES.md` file (which is in the root folder).
+
+  - Task `blessReleaseNotes`: prepends the entries from `src/releasenotes` directly to the `RELEASE_NOTES.md` file in the root folder. This file should be committed to your VCS.
+
+- __Details__: This strategy uses the [Markdown format](#markdown) and is a composite of [the root folder strategy](#root-folder) and [the headerless strategy](#headerless). We recommend you use this strategy in your GitHub projects.
+
 #### Root folder
 
 - __Strategy name__: `RootFolderReleaseNotesStrategy`
 
-This strategy is suitable for GitHub-style repositories. See [the github example](samples/github).
+- __Task behaviour__:
 
-Places the blessed release notes file into the project's root folder. For example, if you use the [Markdown](#markdown) format,
-then the file `RELEASE_NOTES.md` will be placed in the topmost folder of your project.
+  - Task `blessReleaseNotes`: prepends the entries from `src/releasenotes` directly to the blessed release notes file in the root folder.
+
+- __Details__: This strategy places the blessed release notes file into the project's root folder. This strategy can be used in conjunction any format. This strategy is suitable for GitHub-style repositories. See [the github example](samples/github).
 
 #### Sphinx
 
 - __Strategy name__: `SphinxReleaseNotesStrategy`
 
-This strategy is suitable for use with the [sbt-site plugin](https://github.com/sbt/sbt-site) and its Sphinx support).
-See [the sphinx example](samples/sphinx).
+- __Task behaviour__:
 
-Does not produce blessed release notes. This strategy outputs the release notes file into `src/sphinx/releaseNotes.rst` (instead
-of `target/releasenotes/RELEASE_NOTES.rst`).
+  - Task `releaseNotes`: this task produces the `src/sphinx/releaseNotes.rst`.
 
-You can add this to your `build.sbt` file, if you want the release notes to be generated before Sphinx generates the
-documentation:
+- __Details__:
 
-```scala
-import com.typesafe.sbt.site.SphinxSupport._
+  - This strategy is suitable for use with the [sbt-site plugin](https://github.com/sbt/sbt-site) and its Sphinx support). See [the sphinx example](samples/sphinx).
 
-generate.in(Sphinx) <<= generate.in(Sphinx).dependsOn(releaseNotes)
-```
+  - You can add this to your `build.sbt` file, if you want the release notes to be generated during the `makeSite` task before Sphinx generates the documentation:
 
-Or you can use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
+    ```scala
+    import com.typesafe.sbt.site.SphinxSupport._
 
-__Caveats__:
+    generate.in(Sphinx) <<= generate.in(Sphinx).dependsOn(releaseNotes)
+    ```
 
-- Cleaning the `src/sphinx/releaseNotes.rst` currently does not work. To fix this, please add the following to your
-  `build.sbt`:
-
-  ```scala
-  cleanFiles += releaseNotesFile.value
-  ```
+  - You can also use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
 
 #### Grouping by first line
 
 - __Strategy name__: `GroupReleaseNotesByFirstLine`
 
-This strategy removes the first line from each release note entry, find all entries that start with the same line,
-and places them together into the release notes for the current version.
+- __Behaviour__: This strategy removes the first line from each release note entry, find all entries that start with the same line, and places them together into the release notes for the current version.
+
+#### Headerless
+
+- __Strategy name__: `HeaderlessReleaseNotesStrategy`
+
+- __Behaviour__: This strategy does not prepend the top header nor does it append the footer to the release notes.

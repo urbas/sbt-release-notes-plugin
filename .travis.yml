@@ -2,6 +2,6 @@ language: scala
 scala:
    - 2.10.4
 script:
-  - sbt test scripted
+  - sbt test scripted publishLocal
   - cd samples/github; sbt test releaseNotes
   - cd ../sphinx; sbt test releaseNotes
