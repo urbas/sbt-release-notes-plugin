@@ -22,7 +22,7 @@ object ReleaseNotesPlugin extends AutoPlugin with ReleaseNotesPluginKeys {
     Seq(
       releaseNotesSourceDir := sourceDirectory.value / RELEASE_NOTES_DIR_NAME,
       sourceDirectories.in(releaseNotes) <<= releaseNotesSourceDir { dir => Seq(dir)},
-      excludeFilter.in(releaseNotes) := new SimpleFileFilter(_.equals(releaseNotesPreviousVersionBodyFile.value)),
+      excludeFilter.in(releaseNotes) := new SimpleFileFilter(_.equals(releaseNotesPreviousVersionBodyFile.value)) || new SimpleFileFilter(filenameStartsWithDot),
       releaseNotesSources <<= Defaults.collectFiles(sourceDirectories.in(releaseNotes), includeFilter.in(releaseNotes), excludeFilter.in(releaseNotes)),
       releaseNotesDir := target.value / RELEASE_NOTES_DIR_NAME,
       releaseNotesPreviousVersionBodyFile := releaseNotesSourceDir.value / RELEASE_NOTES_PREVIOUS_VERSION_BODY_FILE_NAME,
@@ -68,5 +68,9 @@ object ReleaseNotesPlugin extends AutoPlugin with ReleaseNotesPluginKeys {
     Def.task[TimestampedContent] {
       FileContent(releaseNotesPreviousVersionBodyFile.value)
     }
+  }
+
+  private def filenameStartsWithDot(file: File): Boolean = {
+    file.getName.startsWith(".")
   }
 }

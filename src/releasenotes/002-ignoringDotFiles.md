@@ -1,0 +1,1 @@
+- __Changed behaviour__: files starting with a dot are now ignored and are not added as release note entry files. To change this behaviour, you can override the `excludeFilter.in(releaseNotes)` setting.
