@@ -1,0 +1,1 @@
+- __Changed behaviour__: The release note entry files are now sorted by file-name before being concatenated.
