@@ -28,7 +28,7 @@ object ReleaseNotesPlugin extends AutoPlugin with ReleaseNotesPluginKeys {
       releaseNotesPreviousVersionBodyFile := releaseNotesSourceDir.value / RELEASE_NOTES_PREVIOUS_VERSION_BODY_FILE_NAME,
       releaseNotesFileName := DEFAULT_RELEASE_NOTES_FILE,
       releaseNotesFile := releaseNotesDir.value / releaseNotesFileName.value,
-      releaseNotesCurrentVersionBody := toContent(releaseNotesSources.value, "\n\n"),
+      releaseNotesCurrentVersionBody := toContent(releaseNotesSources.value.sortBy(_.getName), "\n\n"),
       releaseNotesPreviousVersion <<= previousVersionBodyTask(),
       releaseNotesBody <<= currentVersionBodyTask(),
       releaseNotes <<= releaseNotesTask(),
