@@ -1,4 +1,5 @@
 package si.urbas.sbt.releasenotes
+
 import sbt.Keys._
 import sbt._
 import si.urbas.sbt.content.TimestampedContent
