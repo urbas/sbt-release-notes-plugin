@@ -1,3 +1,13 @@
+## 0.0.3
+
+
+
+- __Changed behaviour__: The release note entry files are now sorted by file-name before being concatenated.
+
+- __Changed behaviour__: files starting with a dot are now ignored and are not added as release note entry files. To change this behaviour, you can override the `excludeFilter.in(releaseNotes)` setting.
+
+- __New feature__: Introduced the `createGitHubRelease` task. Please see [the documentation]()
+
 ## 0.0.2
 
 - __New feature__: Added `HeaderlessReleaseNotesStrategy`.
