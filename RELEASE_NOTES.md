@@ -6,7 +6,7 @@
 
 - __Changed behaviour__: files starting with a dot are now ignored and are not added as release note entry files. To change this behaviour, you can override the `excludeFilter.in(releaseNotes)` setting.
 
-- __New feature__: Introduced the `createGitHubRelease` task. Please see [the documentation]()
+- __New feature__: Introduced the `createGitHubRelease` task.
 
 ## 0.0.2
 
