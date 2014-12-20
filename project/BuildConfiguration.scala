@@ -44,7 +44,7 @@ object PublishConfiguration {
   private val projectScmUrl = s"git@github.com:urbas/$projectName.git"
   private val ownerName = "urbas"
   private val ownerUrl = "https://github.com/urbas"
-  private val credentialsFile = Path.userHome / ".ivy2" / ".credentials"
+  private val credentialsFile = Path.userHome / ".ivy2" / ".sbt-release-notes-plugin-credentials"
 
   private lazy val pomExtraSettings = {
     <url>
