@@ -5,6 +5,7 @@ import sbtrelease.ReleasePlugin.ReleaseKeys._
 import sbtrelease.ReleasePlugin._
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease._
+import si.urbas.sbt.releasenotes._
 import si.urbas.sbt.releasenotes.ReleaseNotesPlugin._
 import si.urbas.sbt.releasenotes.strategies._
 import xerial.sbt.Sonatype.SonatypeKeys._

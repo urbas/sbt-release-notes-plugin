@@ -65,6 +65,28 @@ to copy the release notes anywhere).
 
 3. __DANGER__: deletes all the release notes entry files.
 
+`createGitHubRelease`: Creates a draft release for the current version on GitHub. Follow these instructions to use this task:
+
+1.  Navigate to [https://github.com/settings/applications](https://github.com/settings/applications) and create a "Personal Access Token" (you can name it `sbt-release-notes-plugin`).
+
+2.  Copy the token into the `$HOME/.sbt/.github-release-notes-token` file.
+
+3.  Enable the `si.urbas.sbt.releasenotes.GitHubReleasesPlugin` plugin in your `build.sbt` file:
+
+  ```sbt
+  val root = project.in(".").enablePlugins(GitHubReleasesPlugin)
+  ```
+
+4.  Place this setting into your `build.sbt` file:
+
+  ```sbt
+  gitHubUserName := "your username"
+
+  gitHubRepositoryName := "the name of your repository"
+  ```
+
+5.  Invoke `sbt createGitHubRelease`.
+
 ### Formats
 
 #### Markdown

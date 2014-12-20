@@ -1,0 +1,1 @@
+- __New feature__: Introduced the `createGitHubRelease` task. Please see [the documentation]()
