@@ -7,6 +7,7 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease._
 import si.urbas.sbt.releasenotes._
 import si.urbas.sbt.releasenotes.ReleaseNotesPlugin._
+import si.urbas.sbt.releasenotes.GitHubReleasesPlugin.autoImport._
 import si.urbas.sbt.releasenotes.strategies._
 import xerial.sbt.Sonatype.SonatypeKeys._
 import xerial.sbt.Sonatype.sonatypeSettings
@@ -24,7 +25,9 @@ object BuildConfiguration extends Build {
     .aggregate(releaseNotesPlugin)
     .settings(PublishConfiguration.rootSettings: _*)
     .settings(ReleaseConfiguration.rootSettings: _*)
-    .enablePlugins(GitHubReleaseNotesStrategy)
+    .settings(gitHubUserName := "urbas")
+    .settings(gitHubRepositoryName := "sbt-release-notes-plugin")
+    .enablePlugins(GitHubReleaseNotesStrategy, GitHubReleasesPlugin)
 
   lazy val releaseNotesPlugin = project.in(file("releaseNotesPlugin"))
     .settings(scriptedSettings ++ sonatypeSettings ++ releaseSettings ++ PublishConfiguration.disableDocPublish: _*)
@@ -132,6 +135,7 @@ object ReleaseConfiguration {
             setReleaseVersion,
             updateVersionFile,
             commitReleaseVersion,
+            createGitHubReleaseStep(thisProject),
             blessReleaseNotesReleaseStep(thisProject),
             commitReleaseNotesChanges,
             tagRelease,
@@ -142,6 +146,10 @@ object ReleaseConfiguration {
             pushChanges
           )
       })
+  }
+
+  private def createGitHubReleaseStep(ref: ProjectRef): ReleaseStep = {
+    ReleaseStep(releaseTask(createGitHubRelease.in(ref)))
   }
 
   private def blessReleaseNotesReleaseStep(ref: ProjectRef): ReleaseStep = {
