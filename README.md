@@ -40,7 +40,7 @@ Instead of choosing the `GitHubReleaseNotesStrategy`, you can create your own by
 
   ```scala
   val root = project.in(".")
-    .enablePlugins(`<Selected format>`, `<Selected strategy>`)
+    .enablePlugins("<Selected format>", "<Selected strategy>")
   ```
 
   An example configuration suitable for GitHub repositories:
