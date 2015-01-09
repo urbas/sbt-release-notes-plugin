@@ -52,10 +52,14 @@ Instead of choosing the `GitHubReleaseNotesStrategy`, you can create your own by
 
 ## SBT tasks
 
-`releaseNotes`: Creates the release notes file. The location of the file determined by the [format](#formats)
+### `releaseNotes`
+
+Creates the release notes file. The location of the file determined by the [format](#formats)
 (by default this file is `target/releasenotes/RELEASE_NOTES`).
 
-`blessReleaseNotes`: Prepares release notes for the next version. You must commit its changes. In detail, this task does
+### `blessReleaseNotes`
+
+Prepares release notes for the next version. You must commit its changes. In detail, this task does
 the following:
 
 1. optionally copies the release notes file into the folder determined by the [strategies](#strategies) (default is not
@@ -65,7 +69,9 @@ to copy the release notes anywhere).
 
 3. __DANGER__: deletes all the release notes entry files.
 
-`createGitHubRelease`: Creates a draft release for the current version on GitHub. Follow these instructions to use this task:
+### `createGitHubRelease`
+
+Creates a draft release for the current version on GitHub. Follow these instructions to use this task:
 
 1.  Navigate to [https://github.com/settings/applications](https://github.com/settings/applications) and create a "Personal Access Token" (you can name it `sbt-release-notes-plugin`).
 
@@ -87,28 +93,28 @@ to copy the release notes anywhere).
 
 5.  Invoke `sbt createGitHubRelease`.
 
-### Formats
+## Formats
 
-#### Markdown
+### Markdown
 
 - Format name: `MdReleaseNotesFormat`
 - Release note entries: `src/releasenotes/*.md`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.md`
 
-#### RST
+### RST
 
 - Format name: `RstReleaseNotesFormat`
 - Release note entries: `src/releasenotes/*.rst`
 - Default release notes location: `target/releasenotes/RELEASE_NOTES.rst`
 
-#### Write your own format
+### Write your own format
 
 Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/RstReleaseNotesFormat.scala) or
 [Markdown](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasenotes/formats/MdReleaseNotesFormat.scala) as examples.
 
-### Strategies
+## Strategies
 
-#### GitHub
+### GitHub
 
 - __Strategy name__: `GitHubReleaseNotesStrategy`
 
@@ -120,7 +126,7 @@ Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasen
 
 - __Details__: This strategy uses the [Markdown format](#markdown) and is a composite of [the root folder strategy](#root-folder) and [the headerless strategy](#headerless). We recommend you use this strategy in your GitHub projects.
 
-#### Root folder
+### Root folder
 
 - __Strategy name__: `RootFolderReleaseNotesStrategy`
 
@@ -130,7 +136,7 @@ Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasen
 
 - __Details__: This strategy places the blessed release notes file into the project's root folder. This strategy can be used in conjunction any format. This strategy is suitable for GitHub-style repositories. See [the github example](samples/github).
 
-#### Sphinx
+### Sphinx
 
 - __Strategy name__: `SphinxReleaseNotesStrategy`
 
@@ -152,13 +158,13 @@ Take a look at [the RST](releaseNotesPlugin/src/main/scala/si/urbas/sbt/releasen
 
   - You can also use `~ ; releaseNotes ; makeSite` command chain when you're updating release notes.
 
-#### Grouping by first line
+### Grouping by first line
 
 - __Strategy name__: `GroupReleaseNotesByFirstLine`
 
 - __Behaviour__: This strategy removes the first line from each release note entry, find all entries that start with the same line, and places them together into the release notes for the current version.
 
-#### Headerless
+### Headerless
 
 - __Strategy name__: `HeaderlessReleaseNotesStrategy`
 
