@@ -1,3 +1,5 @@
+__WARNING__: This plugin is no longer maintained.
+
 # SBT Release Notes Plugin
 
 Please see [the release notes](RELEASE_NOTES.md) for the latest version of this plugin.
